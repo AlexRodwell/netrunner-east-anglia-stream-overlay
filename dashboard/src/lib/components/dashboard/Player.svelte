@@ -46,14 +46,6 @@
 	const togglePlayerID = (active: TGameSide) => {
 		let opposite: TGameSide = active === "corp" ? "runner" : "corp";
 
-		// console.log('================================================', {
-		// 	currentPlayer: name,
-		// 	selected: {
-		// 		active: active,
-		// 		inactive: opposite,
-		// 	},
-		// })
-
 		dispatch("swap_deck", {
 			currentPlayer: name,
 			selected: {
@@ -294,14 +286,17 @@
 						<div slot="action" class="switch-group">
 							<Switch
 								id="{name}-display-card"
-								bind:checked={playerCurrent.highlight[type].active}
+								bind:checked={playerCurrent.highlight[type]
+									.active}
 								on:click={(event) => {
-									playerCurrent.highlight[type].active = !playerCurrent.highlight[type].active;
-									console.log(playerCurrent.highlight[type].active);
+									playerCurrent.highlight[type].active =
+										!playerCurrent.highlight[type].active;
 									deploy();
 								}}
 							/>
-							<Label for="{name}-display-card">{$t("display")}</Label>
+							<Label for="{name}-display-card"
+								>{$t("display")}</Label
+							>
 						</div>
 					</Card.Title>
 				</Card.Header>
@@ -309,7 +304,7 @@
 					<Search
 						{name}
 						side={playerCurrent.side}
-						type={type}
+						{type}
 						on:card={(e) => {
 							playerCurrent.highlight[type].current = e.detail;
 							deploy();
@@ -318,6 +313,5 @@
 				</Card.Content>
 			</Card.Root>
 		{/each}
-
 	</Card.Content>
 </Card.Root>

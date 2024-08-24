@@ -144,9 +144,7 @@ export const fetch_cards = async () => {
 	try {
 		const response = await fetch(api.endpoint + api.cards);
 
-		netrunnerDB.subscribe((value) => {
-			// console.log(value);
-		});
+		netrunnerDB.subscribe((value) => { });
 
 		if (!response.ok) {
 			throw new Error("Network response was not ok");
