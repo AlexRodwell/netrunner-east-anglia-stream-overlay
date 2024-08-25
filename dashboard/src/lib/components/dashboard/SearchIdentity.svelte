@@ -10,7 +10,6 @@
 	import { find_faction_by_id, slugify } from "$lib/utils";
 	import { t } from "$lib/translations";
 
-	export let player: TPlayerSide;
 	export let side: TGameSide;
 
 	const dispatch = createEventDispatcher();
