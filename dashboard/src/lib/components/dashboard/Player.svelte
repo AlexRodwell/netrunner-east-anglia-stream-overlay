@@ -150,7 +150,6 @@
 							}}
 						/>
 						<SearchIdentity
-							player={name}
 							side="corp"
 							on:change={(e) => {
 								playerCurrent.decks.corp.id = e.detail;
@@ -177,7 +176,6 @@
 							}}
 						/>
 						<SearchIdentity
-							player={name}
 							side="runner"
 							on:change={(e) => {
 								playerCurrent.decks.runner.id = e.detail;
@@ -230,7 +228,7 @@
 								? "primary"
 								: "outline"}
 							align="center"
-							{value}
+							value={value.toString()}
 							name="wins_{name}"
 							on:click={(event) => {
 								playerCurrent.player.wins = value;
