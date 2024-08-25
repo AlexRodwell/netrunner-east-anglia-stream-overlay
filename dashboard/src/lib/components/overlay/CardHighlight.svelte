@@ -27,38 +27,49 @@
 					default: "z-10 h-[90%]",
 					inactive: "50vw",
 				},
-				left: "left-[2.5%] origin-bottom-left -rotate-2",
-				right: "right-[2.5%] origin-bottom-right rotate-2",
+				left: "left-[2.5%] origin-bottom-left",
+				right: "right-[2.5%] origin-bottom-right",
 			},
 			secondary: {
 				shared: {
-					default: "top-1/2 -translate-y-1/2 h-[80%] -mt-6",
+					default: "h-[80%] -mt-4",
 					inactive: "-50vw",
 				},
-				left: "left-[25%] origin-bottom-left rotate-3",
-				right: "right-[25%] origin-bottom-right -rotate-3",
+				left: "left-[35%] origin-bottom-left",
+				right: "right-[35%] origin-bottom-right",
 			},
 		},
 	};
 </script>
 
-<!-- style="--width: {width}vw" -->
 <div class="{classes.wrapper.base} {$$props.class ?? ''}">
 	{#each ["primary", "secondary"] as type}
 		<div
 			id="{player}-card-{type}"
-			class="h-full absolute flex flex-row {classes.wrapper[
-				align
-			]} {classes.card[type].shared.default} {classes.card[type][align]}"
-			style="--tw-transform-x: translateX({data[type].active
+			class="h-full absolute flex flex-row translate-x-[var(--translate-x)] rotate-[var(--rotate)] {classes
+				.wrapper[align]} {classes.card[type].shared.default} {classes
+				.card[type][align]}"
+			style="--translate-x: {data[type].active
 				? '0'
 				: player === 'playerOne'
 					? '-300'
-					: '300'}%); transition: transform 200ms ease-in-out 260ms; --transition-delay: {data[
+					: '300'}%; transition: transform 200ms ease-in-out 260ms; --transition-delay: {data[
 				type
 			].active
 				? '480ms'
-				: '0ms'}"
+				: '0ms'};
+				--rotate: {type === 'primary'
+				? data[type].active
+					? player === 'playerOne'
+						? '-2'
+						: '2'
+					: '0'
+				: data[type].active
+					? player === 'playerOne'
+						? '2'
+						: '-2'
+					: '0'}deg
+			"
 		>
 			<Card
 				code={data[type].current}
