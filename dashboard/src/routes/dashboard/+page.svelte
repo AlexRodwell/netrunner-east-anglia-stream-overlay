@@ -4,7 +4,12 @@
 		PUBLIC_WEBSOCKET_URL,
 	} from "$env/static/public";
 	import { onMount } from "svelte";
-	import { playerOneData, playerTwoData, deploy } from "$lib/store";
+	import {
+		globalData,
+		playerOneData,
+		playerTwoData,
+		deploy,
+	} from "$lib/store";
 	import type {
 		PlayerAttributes as TPlayerAttributes,
 		GlobalData as TGlobalData,

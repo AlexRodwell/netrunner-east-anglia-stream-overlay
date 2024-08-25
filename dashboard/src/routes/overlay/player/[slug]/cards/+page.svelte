@@ -13,20 +13,22 @@
 	let side = data.slug;
 </script>
 
-<Wrapper>
+<Wrapper
+	class="flex flex-row {side === 'left' ? 'justify-start' : 'justify-end'}"
+>
 	{#if side === "left"}
 		<CardHighlight
 			player="playerOne"
 			data={$playerOneData.highlight}
 			side={$playerOneData.side}
+			width={100}
 		/>
-		<div />
 	{:else if side === "right"}
-		<div />
 		<CardHighlight
 			player="playerTwo"
 			data={$playerTwoData.highlight}
 			side={$playerTwoData.side}
+			width={40}
 		/>
 	{/if}
 </Wrapper>

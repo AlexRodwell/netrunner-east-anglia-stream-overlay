@@ -11,14 +11,21 @@
 
 	$: back = side === "corp" ? BACK_CORPORATION : BACK_RUNNER;
 
-	$: url = code ? `https://card-images.netrunnerdb.com/v1/large/{code}.jpg`.replace("{code}", code) : false;
+	$: url = code
+		? `https://card-images.netrunnerdb.com/v1/large/{code}.jpg`.replace(
+				"{code}",
+				code,
+			)
+		: false;
 </script>
 
 <div
 	class="aspect-[64/89] [transform-style:preserve-3d] flex transition-transform [transform:var(--transform)] {glow
 		? 'card--glow'
 		: ''} {$$props['class']}"
-	style="transform: {flip ? 'rotateY(-180deg)' : 'rotateY(0deg)' }; transition-duration: 480ms; transition-delay: var(--transition-delay, 0ms);"
+	style="transform: {flip
+		? 'rotateY(-180deg)'
+		: 'rotateY(0deg)'}; transition-duration: 480ms; transition-delay: var(--transition-delay, 0ms);"
 >
 	<div
 		class="face {glow
