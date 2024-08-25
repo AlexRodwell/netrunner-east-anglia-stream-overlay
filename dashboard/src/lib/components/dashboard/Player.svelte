@@ -298,6 +298,8 @@
 
 									deploy();
 								}}
+								disabled={type === "secondary" &&
+									!playerCurrent.highlight?.primary.active}
 							/>
 							<Label for="{name}-display-card"
 								>{$t("display")}</Label
