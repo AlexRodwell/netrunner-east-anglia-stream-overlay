@@ -288,6 +288,14 @@
 								on:click={(event) => {
 									playerCurrent.highlight[type].active =
 										!playerCurrent.highlight[type].active;
+
+									if (
+										type === "primary" &&
+										!playerCurrent.highlight[type].active
+									) {
+										playerCurrent.highlight.secondary.active = false;
+									}
+
 									deploy();
 								}}
 							/>
