@@ -4,12 +4,7 @@
 		PUBLIC_WEBSOCKET_URL,
 	} from "$env/static/public";
 	import { onMount } from "svelte";
-	import {
-		globalData,
-		playerOneData,
-		playerTwoData,
-		deploy,
-	} from "$lib/store";
+	import { playerOneData, playerTwoData, deploy } from "$lib/store";
 	import type {
 		PlayerAttributes as TPlayerAttributes,
 		GlobalData as TGlobalData,
@@ -21,14 +16,6 @@
 	import Header from "$components/dashboard/Header.svelte";
 
 	let socket: WebSocket;
-	let global: TGlobalData = $globalData;
-
-	let players: {
-		[key in "one" | "two"]: TPlayerSide;
-	} = {
-		one: "playerOne",
-		two: "playerTwo",
-	};
 
 	let websocket = PUBLIC_WEBSOCKET_CONNECTION.toLowerCase() === "true";
 
@@ -102,40 +89,74 @@
 	};
 
 	const deploy_data = () => {
-		["global", "playerOne", "playerTwo", "timer"].forEach((type) => {
-			// Return if hold_ value does not exist in localStorage
-			if (
-				localStorage.getItem(`hold_${type}`) === "undefined" ||
-				localStorage.getItem(`hold_${type}`) === null ||
-				Object.keys(JSON.parse(localStorage.getItem(`hold_${type}`)))
-					.length === 0
-			) {
-				console.info(`Skipping ${type}`);
-				return;
-			}
+		console.log(
+			"DEPLOYING ===========================================================",
+		);
 
-			const hold = JSON.parse(localStorage.getItem(`hold_${type}`));
-			console.info(`Deploying ${type} data:`, hold);
+		["global", "playerOne", "playerTwo", "timer"].forEach(
+			(type: string) => {
+				console.log(
+					"------------------------------------------------------------",
+				);
+				console.log(`Processing ${type}...`);
 
-			if (websocket) {
-				try {
-					socket.send(
-						JSON.stringify({
-							_type: type,
-							...hold,
-						}),
-					);
-				} catch (error) {
-					alert("Failed to update data via websocket");
+				const hold_key = `hold_${type}`;
+				const raw_data = localStorage.getItem(hold_key);
+				console.log(`Raw data for ${hold_key}:`, raw_data);
+
+				if (!raw_data) {
+					console.warn(`No data found for ${hold_key}, skipping`);
+					return;
 				}
-			}
 
-			// Update the real value
-			localStorage.setItem(type, JSON.stringify(hold));
+				let hold;
+				try {
+					hold = JSON.parse(raw_data);
+					console.log(`Parsed data for ${hold_key}:`, hold);
+				} catch (error) {
+					console.error(`Error parsing data for ${hold_key}:`, error);
+					return;
+				}
 
-			// Remove hold value
-			localStorage.removeItem(`hold_${type}`);
-		});
+				if (
+					typeof hold !== "object" ||
+					hold === null ||
+					Object.keys(hold).length === 0
+				) {
+					console.warn(
+						`Invalid or empty hold data for ${type}, skipping deployment`,
+					);
+					return;
+				}
+
+				console.info(`Deploying ${type} data:`, hold);
+
+				if (websocket) {
+					try {
+						socket.send(JSON.stringify({ _type: type, ...hold }));
+						console.log(`Sent ${type} data via WebSocket`);
+					} catch (error) {
+						console.error(
+							`Failed to update ${type} data via WebSocket:`,
+							error,
+						);
+						alert(`Failed to update ${type} data via WebSocket`);
+					}
+				}
+
+				// Update the real value
+				localStorage.setItem(type, JSON.stringify(hold));
+				console.log(`Updated ${type} in localStorage`);
+
+				// Remove hold value
+				localStorage.removeItem(hold_key);
+				console.log(`Removed ${hold_key} from localStorage`);
+
+				// Verify the update
+				const updated = localStorage.getItem(type);
+				console.log(`Verified ${type} data after update:`, updated);
+			},
+		);
 
 		$deploy.proceed = false;
 	};
