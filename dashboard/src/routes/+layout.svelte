@@ -21,7 +21,7 @@
 	let storage_keys: string[] = ["global", "playerOne", "playerTwo", "timer"];
 
 	onMount(async () => {
-		console.info("✔️ Window loaded");
+		console.info(`%c Loaded %cWindow`, "background: gray");
 
 		if (!localStorage.getItem("language")) {
 			localStorage.setItem(
@@ -57,8 +57,8 @@
 
 			if (store && typeof store === "object") {
 				console.info(
-					`✔️ Loaded %c${type}%cdata from localStorage`,
-					"background: blue",
+					`%c Loaded %c${type} data from localStorage`,
+					"background: gray",
 				);
 
 				// Update svelte store with cached (localStorage) data
@@ -92,7 +92,8 @@
 
 			socket.addEventListener("message", (event) => {
 				console.log(
-					"recieving websocket connection...",
+					"%c WEBSOCKET %c Message recieved",
+					"background: blue",
 					JSON.parse(event.data),
 				);
 

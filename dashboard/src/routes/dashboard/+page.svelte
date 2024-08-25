@@ -94,20 +94,10 @@
 	};
 
 	const deploy_data = () => {
-		console.log(
-			"DEPLOYING ===========================================================",
-		);
-
 		["global", "playerOne", "playerTwo", "timer"].forEach(
 			(type: string) => {
-				console.log(
-					"------------------------------------------------------------",
-				);
-				console.log(`Processing ${type}...`);
-
 				const hold_key = `hold_${type}`;
 				const raw_data = localStorage.getItem(hold_key);
-				console.log(`Raw data for ${hold_key}:`, raw_data);
 
 				if (!raw_data) {
 					console.warn(`No data found for ${hold_key}, skipping`);
@@ -117,7 +107,6 @@
 				let hold;
 				try {
 					hold = JSON.parse(raw_data);
-					console.log(`Parsed data for ${hold_key}:`, hold);
 				} catch (error) {
 					console.error(`Error parsing data for ${hold_key}:`, error);
 					return;
@@ -134,12 +123,9 @@
 					return;
 				}
 
-				console.info(`Deploying ${type} data:`, hold);
-
 				if (websocket) {
 					try {
 						socket.send(JSON.stringify({ _type: type, ...hold }));
-						console.log(`Sent ${type} data via WebSocket`);
 					} catch (error) {
 						console.error(
 							`Failed to update ${type} data via WebSocket:`,
@@ -149,17 +135,16 @@
 					}
 				}
 
+				console.info(
+					`%c DEPLOYED %c${type}'s' data`,
+					"background: DarkGreen",
+				);
+
 				// Update the real value
 				localStorage.setItem(type, JSON.stringify(hold));
-				console.log(`Updated ${type} in localStorage`);
 
 				// Remove hold value
 				localStorage.removeItem(hold_key);
-				console.log(`Removed ${hold_key} from localStorage`);
-
-				// Verify the update
-				const updated = localStorage.getItem(type);
-				console.log(`Verified ${type} data after update:`, updated);
 			},
 		);
 
