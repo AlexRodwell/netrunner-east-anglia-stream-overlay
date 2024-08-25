@@ -134,7 +134,7 @@
 			<Card.Content class="grid gap-2">
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<label data-uid="side-corp" class="grid gap-1">
-					<span>{$t("corporation")} ID</span>
+					<span>{$t("corporation")} {$t("identity")}</span>
 					<div
 						class="id-selection grid grid-cols-[auto,1fr] gap-2 items-center"
 					>
@@ -161,7 +161,7 @@
 				</label>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<label data-uid="side-runner" class="grid gap-1">
-					<span>{$t("runner")} ID</span>
+					<span>{$t("runner")} {$t("identity")}</span>
 					<div
 						class="id-selection grid grid-cols-[auto,1fr] gap-2 items-center"
 					>
@@ -203,6 +203,7 @@
 					type="text"
 					bind:value={playerCurrent.player.name}
 					on:input={deploy}
+					maxlength={30}
 				/>
 
 				<Label data-uid="pronouns" class="side__item" for="pronouns"
@@ -214,6 +215,7 @@
 					bind:value={playerCurrent.player.pronoun}
 					on:input={deploy}
 					placeholder="they/them"
+					maxlength={20}
 				/>
 
 				<!-- Wins -->
