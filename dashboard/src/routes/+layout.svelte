@@ -45,18 +45,20 @@
 		// Persistant storage
 		storage_keys.forEach((type) => {
 			if (
-				JSON.parse(localStorage.getItem(type)) !== null &&
+				localStorage.getItem(type) !== "undefined" &&
+				localStorage.getItem(type) !== null &&
 				Object.keys(JSON.parse(localStorage.getItem(type))).length === 0
-			)
+			) {
 				return;
+			}
 
 			const store = JSON.parse(localStorage.getItem(type));
 
 			if (store && typeof store === "object") {
-				// console.info(
-				// 	`✔️ Loaded %c${type}%cdata from localStorage`,
-				// 	"background: blue",
-				// );
+				console.info(
+					`✔️ Loaded %c${type}%cdata from localStorage`,
+					"background: blue",
+				);
 
 				// Update svelte store with cached (localStorage) data
 				if (store) {
@@ -98,16 +100,12 @@
 				delete data["_type"];
 
 				if (type === "playerOne") {
-					// localStorage.setItem("playerOne", JSON.stringify(data));
 					$playerOneData = data;
 				} else if (type === "playerTwo") {
-					// localStorage.setItem("playerTwo", JSON.stringify(data));
 					$playerTwoData = data;
 				} else if (type === "timer") {
-					// localStorage.setItem("timer", JSON.stringify(data));
 					$timerData = data;
 				} else if (type === "global") {
-					// localStorage.setItem("global", JSON.stringify(data));
 					$globalData = data;
 				}
 			});
