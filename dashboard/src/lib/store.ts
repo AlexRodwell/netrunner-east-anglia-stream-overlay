@@ -4,6 +4,7 @@ import type {
 	PlayerData,
 	TimerData,
 	PlayerAttributes,
+	Card
 } from "./types";
 
 // JSON
@@ -15,7 +16,18 @@ import DefaultTimer from "$lib/data/default/timer.json";
 export const websocketToken = writable<string>();
 
 // API data
-export const netrunnerDB = writable<Map<string, any>>(new Map());
+export const netrunnerDB = writable<{
+	data: Card[];
+	links: {
+		first: string;
+		last?: string;
+	};
+}>({
+	data: [],
+	links: {
+		first: ""
+	}
+});
 
 // Websocket data
 export const globalData = writable<GlobalData>(DefaultGlobal);

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from "svelte";
 	import Preview from "$components/dashboard/Preview.svelte";
 	import ResetState from "$components/dashboard/ResetState.svelte";
 	import FlipPlayers from "$components/dashboard/FlipPlayers.svelte";
@@ -24,6 +23,7 @@
 	import { Button } from "$lib/components/ui/button";
 
 	export let update: Function;
+	export let deploy_data: Function;
 
 	let global: TGlobalData = $globalData;
 	let timer: TTimerData = $timerData;
@@ -153,30 +153,32 @@
 	</Actions>
 	<Actions>
 		<Connection />
-
 		{#if $deploy.type === "manual"}
 			<Button
 				variant="default"
+				disabled={!$deploy.proceed}
 				on:click={() => {
-					$deploy.proceed = true;
 					update({
 						type: "global",
-						data: global,
+						data: $globalData,
 					});
 					update({
 						type: "timer",
-						data: timer,
+						data: $timerData,
 					});
 					update({
 						type: "playerOne",
-						data: playerOneData,
+						data: $playerOneData,
 					});
 					update({
 						type: "playerTwo",
-						data: playerTwoData,
+						data: $playerTwoData,
 					});
-				}}>Deploy</Button
+					deploy_data();
+				}}
 			>
+				{$deploy.proceed ? "Deploy" : "Waiting for changes"}
+			</Button>
 		{/if}
 	</Actions>
 </header>

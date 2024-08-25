@@ -2,15 +2,11 @@
 	import { createEventDispatcher } from "svelte";
 	import Card from "$components/dashboard/ui/Card.svelte";
 	import { globalData, deploy } from "$lib/store";
-	import Heading from "$components/dashboard/ui/Heading.svelte";
 	import * as Dialog from "$lib/components/ui/dialog";
 
 	// Icons
-	import ICON_CLICKS from "$lib/assets/icons/NSG_CLICK.svg";
-	import ICON_CREDITS from "$lib/assets/icons/NSG_CREDIT.svg";
-	import ICON_AGENDAS from "$lib/assets/icons/NSG_AGENDA.svg";
 	import { Settings } from "lucide-svelte";
-	import { Button, buttonVariants } from "$lib/components/ui/button";
+	import { buttonVariants } from "$lib/components/ui/button";
 	import Column from "./ui/Column.svelte";
 	import { Label } from "$lib/components/ui/label";
 	import { Switch } from "$lib/components/ui/switch";
@@ -19,15 +15,14 @@
 	import type { GlobalData as TGlobalData } from "$lib/types";
 	import { Slider } from "$lib/components/ui/slider";
 	import { Input } from "$lib/components/ui/input";
-	import * as Select from "$lib/components/ui/select";
 
 	let global: TGlobalData = $globalData;
 	let deployType: boolean = $deploy.type !== "automatic";
 
 	const icons: Record<string, string> = {
-		clicks: ICON_CLICKS,
-		credits: ICON_CREDITS,
-		agendas: ICON_AGENDAS,
+		clicks: "/NSG_CLICK.svg",
+		credits: "/NSG_CREDIT.svg",
+		agendas: "/NSG_AGENDA.svg",
 	};
 
 	const dispatch = createEventDispatcher();
@@ -43,32 +38,39 @@
 			<Dialog.Title>{$t("global_settings")}</Dialog.Title>
 		</Dialog.Header>
 		<div>
-			<Card title="Deploy method" outline={false} uid="display">
-				<Column columns={3}>
-					<Column span="1/-1">
-						<CardNew.Root>
-							<CardNew.Header>Deployment type</CardNew.Header>
-							<CardNew.Content class="switch-group">
-								<Switch
-									id="deploy-type"
-									bind:checked={deployType}
-									on:click={(event) => {
-										$deploy.type = deployType
-											? "automatic"
-											: "manual";
-										$deploy.proceed =
-											$deploy.type === "automatic";
-									}}
-								/>
-								<Label for="deploy-type">
-									{$deploy.type === "manual"
-										? "Manual"
-										: "Automatic (instant)"}
-								</Label>
-							</CardNew.Content>
-						</CardNew.Root>
-					</Column>
+			<Card outline={false} uid="display">
+				<Column>
+					<CardNew.Root>
+						<CardNew.Header>Deployment type</CardNew.Header>
+						<CardNew.Content class="switch-group">
+							<Switch
+								id="deploy-type"
+								bind:checked={deployType}
+								on:click={(event) => {
+									$deploy.type = deployType
+										? "automatic"
+										: "manual";
+									$deploy.proceed =
+										$deploy.type === "automatic";
+								}}
+							/>
+							<Label for="deploy-type">
+								{$deploy.type === "manual"
+									? "Manual"
+									: "Automatic (instant)"}
+							</Label>
+						</CardNew.Content>
+					</CardNew.Root>
+				</Column>
+			</Card>
+		</div>
 
+		<Dialog.Header>
+			<Dialog.Title>{$t("global_settings")}</Dialog.Title>
+		</Dialog.Header>
+		<div>
+			<Card>
+				<Column columns={3}>
 					<!-- <Column span="1/-1">
 						<CardNew.Root>
 							<CardNew.Header
@@ -146,7 +148,7 @@
 						</CardNew.Header>
 					</CardNew.Root>
 
-					<CardNew.Root>
+					<CardNew.Root class="col-[auto/span_2]">
 						<CardNew.Header class="switch-group justify-between">
 							<Label for="commentators">Commentators</Label>
 						</CardNew.Header>
@@ -188,7 +190,6 @@
 							</Select.Root>
 						</CardNew.Content>
 					</CardNew.Root> -->
-					
 				</Column>
 			</Card>
 		</div>

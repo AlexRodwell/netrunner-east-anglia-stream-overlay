@@ -2,15 +2,12 @@
 	import { createEventDispatcher } from "svelte";
 	import { netrunnerDB, playerOneData, playerTwoData } from "$lib/store";
 	import type {
-		Card as TCard,
-		PlayerAttributes as TPlayerAttributes,
 		GameSide as TGameSide,
 		PlayerSide as TPlayerSide,
 	} from "$lib/types";
 	import Card from "../Card.svelte";
 	import Fuse from "fuse.js";
 	import { Input } from "$lib/components/ui/input";
-	import { Label } from "$lib/components/ui/label";
 
 	const dispatch = createEventDispatcher();
 
@@ -31,17 +28,24 @@
 	let selected: string[] = [];
 
 	const filter = () => {
-		results = new Fuse($netrunnerDB.data.filter((i: any) => true), {
-			keys: ["attributes.title", "attributes.stripped_title"]
-		})
-		.search(searchText)
-		.slice(0, 8);
-	}
+		results = new Fuse(
+			$netrunnerDB.data.filter((i: boolean) => true),
+			{
+				keys: ["attributes.title", "attributes.stripped_title"],
+			},
+		)
+			.search(searchText)
+			.slice(0, 8);
+	};
 </script>
 
 <section class="grid grid-cols-[1fr,3fr] gap-6">
 	<div>
-		<Card code={player.highlight[type].current} glow={false} class="sticky top-16" />
+		<Card
+			code={player.highlight[type].current}
+			glow={false}
+			class="sticky top-16"
+		/>
 	</div>
 	<div class="grid gap-4">
 		<Input
@@ -59,13 +63,16 @@
 					)
 						? 'result--active'
 						: ''}"
-					on:click={() => dispatch("card", card.attributes.latest_printing_id)}
+					on:click={() =>
+						dispatch("card", card.attributes.latest_printing_id)}
 				>
 					<Card
 						code={card.attributes.latest_printing_id}
 						glow={false}
 					/>
-					<p class="text-left line-clamp-2">{card.attributes.stripped_title}</p>
+					<p class="text-left line-clamp-2">
+						{card.attributes.stripped_title}
+					</p>
 				</button>
 			{/each}
 		</div>

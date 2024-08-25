@@ -16,32 +16,44 @@
 	const theme: TThemeClasses = layout[$globalData.overlay.layout];
 
 	$: {
-		import(`$lib/styles/${$globalData.overlay.layout}.css`)
-			.catch(error => {
+		import(`$lib/styles/${$globalData.overlay.layout}.css`).catch(
+			(error) => {
 				console.error(`Failed to import CSS file: ${error}`);
-			});
+			},
+		);
 	}
 </script>
 
 {#if $netrunnerDB && $playerOneData && $playerTwoData}
-	<Wrapper>
-		<Commentators />
-		<CardHighlight
-			player="playerOne"
-			data={$playerOneData.highlight}
-			side={$playerOneData.side}
-		/>
-		<CardHighlight
-			player="playerTwo"
-			data={$playerTwoData.highlight}
-			side={$playerTwoData.side}
-		/>
-		<section
-			class="absolute bottom-0 left-0 right-0 col-[1/-1] flex flex-row justify-between items-center"
-		>
+	<Wrapper
+		class="grid gap-[calc(var(--padding)/2)] grid-cols-2 grid-rows-[auto_1fr_auto] items-end py-[var(--padding)]"
+	>
+		<div class="col-span-2">
+			<Commentators />
+		</div>
+		<div class="flex flex-row justify-start pl-[var(--padding)]">
+			<CardHighlight
+				class="h-[40vh]"
+				player="playerOne"
+				data={$playerOneData.highlight}
+				side={$playerOneData.side}
+			/>
+		</div>
+		<div class="flex flex-row justify-end pr-[var(--padding)]">
+			<CardHighlight
+				class="h-[40vh]"
+				player="playerTwo"
+				data={$playerTwoData.highlight}
+				side={$playerTwoData.side}
+			/>
+		</div>
+
+		<div class=" bottom-0 left-0 w-[50vw]">
 			<Side player="playerOne" {theme} />
+		</div>
+		<div class=" bottom-0 right-0 w-[50vw]">
 			<Side player="playerTwo" {theme} />
-		</section>
+		</div>
 	</Wrapper>
 {:else}
 	<main

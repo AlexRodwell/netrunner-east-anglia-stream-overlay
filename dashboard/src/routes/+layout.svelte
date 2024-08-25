@@ -15,12 +15,13 @@
 	import { page } from "$app/stores";
 	import { fetch_cards } from "$lib/utils";
 	import { t } from "$lib/translations";
+	import JSON_FACTIONS from "$lib/data/factions.json";
 
 	let socket: WebSocket;
 	let storage_keys: string[] = ["global", "playerOne", "playerTwo", "timer"];
 
 	onMount(async () => {
-		console.info("✔️ Window loaded");
+		console.info(`%c Loaded %cWindow`, "background: gray");
 
 		if (!localStorage.getItem("language")) {
 			localStorage.setItem(
@@ -45,18 +46,20 @@
 		// Persistant storage
 		storage_keys.forEach((type) => {
 			if (
-				JSON.parse(localStorage.getItem(type)) !== null &&
+				localStorage.getItem(type) !== "undefined" &&
+				localStorage.getItem(type) !== null &&
 				Object.keys(JSON.parse(localStorage.getItem(type))).length === 0
-			)
+			) {
 				return;
+			}
 
 			const store = JSON.parse(localStorage.getItem(type));
 
 			if (store && typeof store === "object") {
-				// console.info(
-				// 	`✔️ Loaded %c${type}%cdata from localStorage`,
-				// 	"background: blue",
-				// );
+				console.info(
+					`%c Loaded %c${type} data from localStorage`,
+					"background: gray",
+				);
 
 				// Update svelte store with cached (localStorage) data
 				if (store) {
@@ -89,7 +92,8 @@
 
 			socket.addEventListener("message", (event) => {
 				console.log(
-					"recieving websocket connection...",
+					"%c WEBSOCKET %c Message recieved",
+					"background: blue",
 					JSON.parse(event.data),
 				);
 
@@ -98,16 +102,12 @@
 				delete data["_type"];
 
 				if (type === "playerOne") {
-					// localStorage.setItem("playerOne", JSON.stringify(data));
 					$playerOneData = data;
 				} else if (type === "playerTwo") {
-					// localStorage.setItem("playerTwo", JSON.stringify(data));
 					$playerTwoData = data;
 				} else if (type === "timer") {
-					// localStorage.setItem("timer", JSON.stringify(data));
 					$timerData = data;
 				} else if (type === "global") {
-					// localStorage.setItem("global", JSON.stringify(data));
 					$globalData = data;
 				}
 			});
@@ -155,6 +155,12 @@
 <svelte:head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="preconnect" href="https://static.nrdbassets.com/" />
+	{#each JSON_FACTIONS as faction}
+		<link rel="preload" href={faction.logo} as="image" />
+	{/each}
+	<link rel="preload" href="/NSG_CLICK.svg" as="image" />
+	<link rel="preload" href="/NSG_CREDIT.svg" as="image" />
+	<link rel="preload" href="/NSG_AGENDA.svg" as="image" />
 </svelte:head>
 
 {#await fetch_cards()}

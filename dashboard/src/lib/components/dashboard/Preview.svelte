@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Eye } from "lucide-svelte";
-	import { Button, buttonVariants } from "$lib/components/ui/button";
+	import { buttonVariants } from "$lib/components/ui/button";
 	import * as Dialog from "$lib/components/ui/dialog";
 
 	export let title: string;

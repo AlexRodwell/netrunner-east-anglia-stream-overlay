@@ -8,9 +8,6 @@
 	} from "$lib/types";
 	import { globalData, playerOneData, playerTwoData } from "$lib/store";
 	import Search from "$components/dashboard/Search.svelte";
-	import ICON_CLICKS from "$lib/assets/icons/NSG_CLICK.svg";
-	import ICON_CREDITS from "$lib/assets/icons/NSG_CREDIT.svg";
-	import ICON_AGENDAS from "$lib/assets/icons/NSG_AGENDA.svg";
 	import Counter from "./Counter.svelte";
 	import { find_faction_by_id } from "$lib/utils";
 	import SearchIdentity from "$components/dashboard/SearchIdentity.svelte";
@@ -46,14 +43,6 @@
 	const togglePlayerID = (active: TGameSide) => {
 		let opposite: TGameSide = active === "corp" ? "runner" : "corp";
 
-		// console.log('================================================', {
-		// 	currentPlayer: name,
-		// 	selected: {
-		// 		active: active,
-		// 		inactive: opposite,
-		// 	},
-		// })
-
 		dispatch("swap_deck", {
 			currentPlayer: name,
 			selected: {
@@ -75,17 +64,17 @@
 		{
 			name: "Clicks",
 			type: "clicks",
-			icon: ICON_CLICKS,
+			icon: "/NSG_CLICK.svg",
 		},
 		{
 			name: "Credits",
 			type: "credits",
-			icon: ICON_CREDITS,
+			icon: "/NSG_CREDIT.svg",
 		},
 		{
 			name: "Agendas",
 			type: "agendas",
-			icon: ICON_AGENDAS,
+			icon: "/NSG_AGENDA.svg",
 		},
 	];
 </script>
@@ -142,7 +131,7 @@
 			<Card.Content class="grid gap-2">
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<label data-uid="side-corp" class="grid gap-1">
-					<span>{$t("corporation")} ID</span>
+					<span>{$t("corporation")} {$t("identity")}</span>
 					<div
 						class="id-selection grid grid-cols-[auto,1fr] gap-2 items-center"
 					>
@@ -158,7 +147,6 @@
 							}}
 						/>
 						<SearchIdentity
-							player={name}
 							side="corp"
 							on:change={(e) => {
 								playerCurrent.decks.corp.id = e.detail;
@@ -169,7 +157,7 @@
 				</label>
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<label data-uid="side-runner" class="grid gap-1">
-					<span>{$t("runner")} ID</span>
+					<span>{$t("runner")} {$t("identity")}</span>
 					<div
 						class="id-selection grid grid-cols-[auto,1fr] gap-2 items-center"
 					>
@@ -185,7 +173,6 @@
 							}}
 						/>
 						<SearchIdentity
-							player={name}
 							side="runner"
 							on:change={(e) => {
 								playerCurrent.decks.runner.id = e.detail;
@@ -211,6 +198,7 @@
 					type="text"
 					bind:value={playerCurrent.player.name}
 					on:input={deploy}
+					maxlength={30}
 				/>
 
 				<Label data-uid="pronouns" class="side__item" for="pronouns"
@@ -222,6 +210,7 @@
 					bind:value={playerCurrent.player.pronoun}
 					on:input={deploy}
 					placeholder="they/them"
+					maxlength={20}
 				/>
 
 				<!-- Wins -->
@@ -236,7 +225,7 @@
 								? "primary"
 								: "outline"}
 							align="center"
-							{value}
+							value={value.toString()}
 							name="wins_{name}"
 							on:click={(event) => {
 								playerCurrent.player.wins = value;
@@ -294,14 +283,27 @@
 						<div slot="action" class="switch-group">
 							<Switch
 								id="{name}-display-card"
-								bind:checked={playerCurrent.highlight[type].active}
+								bind:checked={playerCurrent.highlight[type]
+									.active}
 								on:click={(event) => {
-									playerCurrent.highlight[type].active = !playerCurrent.highlight[type].active;
-									console.log(playerCurrent.highlight[type].active);
+									playerCurrent.highlight[type].active =
+										!playerCurrent.highlight[type].active;
+
+									if (
+										type === "primary" &&
+										!playerCurrent.highlight[type].active
+									) {
+										playerCurrent.highlight.secondary.active = false;
+									}
+
 									deploy();
 								}}
+								disabled={type === "secondary" &&
+									!playerCurrent.highlight?.primary.active}
 							/>
-							<Label for="{name}-display-card">{$t("display")}</Label>
+							<Label for="{name}-display-card"
+								>{$t("display")}</Label
+							>
 						</div>
 					</Card.Title>
 				</Card.Header>
@@ -309,7 +311,7 @@
 					<Search
 						{name}
 						side={playerCurrent.side}
-						type={type}
+						{type}
 						on:card={(e) => {
 							playerCurrent.highlight[type].current = e.detail;
 							deploy();
@@ -318,6 +320,5 @@
 				</Card.Content>
 			</Card.Root>
 		{/each}
-
 	</Card.Content>
 </Card.Root>

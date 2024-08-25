@@ -5,6 +5,7 @@
 	import { Timer } from "lucide-svelte";
 	import { Button, buttonVariants } from "$lib/components/ui/button";
 	import * as Dialog from "$lib/components/ui/dialog";
+	import { Input } from "$lib/components/ui/input";
 
 	let timer: TTimerData = $timerData;
 
@@ -14,7 +15,6 @@
 	const dispatch = createEventDispatcher();
 
 	const deploy = () => {
-		// console.log(timer);
 		dispatch("timer", timer);
 	};
 
@@ -42,41 +42,11 @@
 		<Dialog.Header>
 			<Dialog.Title>Timer</Dialog.Title>
 		</Dialog.Header>
-		<div>
-			<h2>Timer</h2>
-			<label>
-				<span>Timer (minutes)</span>
-				<input type="number" bind:value={timer.count} />
-			</label>
-
-			{#if timer.action === "set"}
-				<svg id="animated" viewBox="0 0 100 100">
-					<circle cx="50" cy="50" r="45" fill="#FDB900"></circle>
-					<path
-						bind:this={svgCounter}
-						id="progress"
-						stroke-linecap="round"
-						stroke-width="5"
-						stroke="#fff"
-						fill="none"
-						d="M50 10
-           a 40 40 0 0 1 0 80
-           a 40 40 0 0 1 0 -80"
-					>
-					</path>
-					<text
-						id="count"
-						x="50"
-						y="50"
-						text-anchor="middle"
-						dy="7"
-						font-size="20"
-						bind:this={svgText}
-					></text>
-					<desc>Created with Snap</desc><defs></defs></svg
-				>
-			{/if}
-
+		<label>
+			<span>Timer (minutes)</span>
+			<Input bind:value={timer.count} type="number" />
+		</label>
+		<Dialog.Footer>
 			<Button
 				on:click={() => {
 					timer.action = "set";
@@ -94,6 +64,6 @@
 				style="background: #242424; border: #242424; color: #fff;"
 				>Clear timer</Button
 			>
-		</div>
+		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>

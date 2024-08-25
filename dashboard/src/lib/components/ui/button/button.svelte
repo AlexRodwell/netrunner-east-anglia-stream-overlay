@@ -16,10 +16,7 @@
 
 <ButtonPrimitive.Root
 	{builders}
-	class={cn(
-		buttonVariants({ variant, size, className }),
-		"grid grid-cols-[1fr,auto]",
-	)}
+	class={cn(buttonVariants({ variant, size, className }))}
 	type="button"
 	{...$$restProps}
 	on:click

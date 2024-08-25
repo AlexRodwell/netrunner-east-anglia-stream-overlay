@@ -21,14 +21,6 @@
 	import Header from "$components/dashboard/Header.svelte";
 
 	let socket: WebSocket;
-	let global: TGlobalData = $globalData;
-
-	let players: {
-		[key in "one" | "two"]: TPlayerSide;
-	} = {
-		one: "playerOne",
-		two: "playerTwo",
-	};
 
 	let websocket = PUBLIC_WEBSOCKET_CONNECTION.toLowerCase() === "true";
 
@@ -94,61 +86,77 @@
 		// Store data locally
 		localStorage.setItem(`hold_${type}`, JSON.stringify(data));
 
-		// Return early if proceed is not true, it will always be true for automatic, and only true for manual when the deploy button is clicked
-		if ($deploy.proceed !== true) return;
-
-		// Deploy data (taken from held localStorage data)
-		deploy_data();
+		if ($deploy.type === "manual") {
+			$deploy.proceed = true;
+		} else {
+			deploy_data();
+		}
 	};
 
 	const deploy_data = () => {
-		// console.clear();
+		["global", "playerOne", "playerTwo", "timer"].forEach(
+			(type: string) => {
+				const hold_key = `hold_${type}`;
+				const raw_data = localStorage.getItem(hold_key);
 
-		["global", "playerOne", "playerTwo", "timer"].forEach((type) => {
-			// Return if hold_ value does not exist in localStorage
-			if (
-				localStorage.getItem(`hold_${type}`) === "undefined" ||
-				localStorage.getItem(`hold_${type}`) === null ||
-				Object.keys(JSON.parse(localStorage.getItem(`hold_${type}`)))
-					.length === 0
-			) {
-				console.info(`Skipping ${type}`);
-				return;
-			}
-
-			const hold = JSON.parse(localStorage.getItem(`hold_${type}`));
-			console.info(`Deploying ${type} data:`, hold);
-
-			if (websocket) {
-				try {
-					socket.send(
-						JSON.stringify({
-							_type: type,
-							...hold,
-						}),
-					);
-				} catch (error) {
-					alert("Failed to update data via websocket");
+				if (!raw_data) {
+					console.warn(`No data found for ${hold_key}, skipping`);
+					return;
 				}
-			}
 
-			// Update the real value
-			localStorage.setItem(type, JSON.stringify(hold));
+				let hold;
+				try {
+					hold = JSON.parse(raw_data);
+				} catch (error) {
+					console.error(`Error parsing data for ${hold_key}:`, error);
+					return;
+				}
 
-			// Remove hold value
-			localStorage.removeItem(`hold_${type}`);
+				if (
+					typeof hold !== "object" ||
+					hold === null ||
+					Object.keys(hold).length === 0
+				) {
+					console.warn(
+						`Invalid or empty hold data for ${type}, skipping deployment`,
+					);
+					return;
+				}
 
-			// Set deploy proceed state to false after a manual deployment
-			if ($deploy.type === "manual") {
-				$deploy.proceed = false;
-			}
-		});
+				if (websocket) {
+					try {
+						socket.send(JSON.stringify({ _type: type, ...hold }));
+					} catch (error) {
+						console.error(
+							`Failed to update ${type} data via WebSocket:`,
+							error,
+						);
+						alert(`Failed to update ${type} data via WebSocket`);
+					}
+				}
+
+				console.info(
+					`%c DEPLOYED %c${type}'s' data`,
+					"background: DarkGreen",
+				);
+
+				// Update the real value
+				localStorage.setItem(type, JSON.stringify(hold));
+
+				// Remove hold value
+				localStorage.removeItem(hold_key);
+			},
+		);
+
+		$deploy.proceed = false;
 	};
 </script>
 
-<main class="bg-[#101010] text-foreground w-screen min-h-screen grid grid-rows-[auto_1fr]">
+<main
+	class="bg-[#101010] text-foreground w-screen min-h-screen grid grid-rows-[auto_1fr]"
+>
 	<!-- Pass the deploy_data function as a property to header, so we can utilise the socket, without having to create a new WebSocket -->
-	<Header update={store_data} />
+	<Header update={store_data} {deploy_data} />
 	<section class="grid grid-cols-1 md:grid-cols-2 p-4 gap-4">
 		<Player
 			update={store_data}

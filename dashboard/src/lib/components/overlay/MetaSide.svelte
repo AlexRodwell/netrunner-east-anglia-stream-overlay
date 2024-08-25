@@ -4,9 +4,6 @@
 		PlayerSide as TPlayerSide,
 		ThemeClasses as TThemeClasses,
 	} from "$lib/types";
-	import ICON_CLICK from "$lib/assets/icons/NSG_CLICK.svg";
-	import ICON_CREDIT from "$lib/assets/icons/NSG_CREDIT.svg";
-	import ICON_AGENDA from "$lib/assets/icons/NSG_AGENDA.svg";
 	import Wins from "./Wins.svelte";
 	import Counter from "./Counter.svelte";
 	import { find_faction_by_id, get_flag_by_iso_code } from "$lib/utils";
@@ -28,7 +25,8 @@
 </script>
 
 <section
-	class="{theme.meta.wrapper} flex flex-row items-center justify-start max-w-[50vw] w-[var(--width)] h-[100px] mb-[var(--padding)] outline-offset-[5px] text-[#fff] [text-shadow:2px_2px_black] bottom-[0] absolute grid-cols-[auto_1fr_auto] {align ===
+	class="{theme.meta
+		.wrapper} flex flex-row items-center justify-start w-full max-h-[100px] h-full outline-offset-[5px] text-[#fff] [text-shadow:2px_2px_black] grid-cols-[auto_1fr_auto] {align ===
 	'left'
 		? left
 		: right}"
@@ -96,7 +94,7 @@
 		{#if global?.clicks}
 			<div class="item">
 				<!-- svelte-ignore a11y-missing-attribute -->
-				<img class="icon" src={ICON_CLICK} />
+				<img class="icon" src="/NSG_CLICK.svg" />
 				<Counter count={data.clicks.amount} {align} />
 			</div>
 		{/if}
@@ -104,7 +102,7 @@
 		{#if global?.credits}
 			<div class="item">
 				<!-- svelte-ignore a11y-missing-attribute -->
-				<img class="icon" src={ICON_CREDIT} />
+				<img class="icon" src="/NSG_CREDIT.svg" />
 				<Counter count={data.credits.amount} {align} />
 			</div>
 		{/if}
@@ -112,7 +110,7 @@
 		{#if global?.agendas}
 			<div class="item {theme.meta.agendas}">
 				<!-- svelte-ignore a11y-missing-attribute -->
-				<img class="icon" src={ICON_AGENDA} />
+				<img class="icon" src="/NSG_AGENDA.svg" />
 				<Counter count={data.agendas.amount} {align} />
 			</div>
 		{/if}
