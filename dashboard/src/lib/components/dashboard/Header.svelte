@@ -160,19 +160,19 @@
 				on:click={() => {
 					update({
 						type: "global",
-						data: global,
+						data: $globalData,
 					});
 					update({
 						type: "timer",
-						data: timer,
+						data: $timerData,
 					});
 					update({
 						type: "playerOne",
-						data: playerOneData,
+						data: $playerOneData,
 					});
 					update({
 						type: "playerTwo",
-						data: playerTwoData,
+						data: $playerTwoData,
 					});
 					deploy_data();
 				}}
