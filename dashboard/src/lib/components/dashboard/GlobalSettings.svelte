@@ -43,7 +43,7 @@
 			<Dialog.Title>{$t("global_settings")}</Dialog.Title>
 		</Dialog.Header>
 		<div>
-			<Card title="Deploy method" outline={false} uid="display">
+			<Card outline={false} uid="display">
 				<Column columns={3}>
 					<Column span="1/-1">
 						<CardNew.Root>
@@ -188,7 +188,6 @@
 							</Select.Root>
 						</CardNew.Content>
 					</CardNew.Root> -->
-					
 				</Column>
 			</Card>
 		</div>
