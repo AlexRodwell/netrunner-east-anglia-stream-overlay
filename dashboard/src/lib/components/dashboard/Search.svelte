@@ -2,8 +2,6 @@
 	import { createEventDispatcher } from "svelte";
 	import { netrunnerDB, playerOneData, playerTwoData } from "$lib/store";
 	import type {
-		Card as TCard,
-		PlayerAttributes as TPlayerAttributes,
 		GameSide as TGameSide,
 		PlayerSide as TPlayerSide,
 	} from "$lib/types";
