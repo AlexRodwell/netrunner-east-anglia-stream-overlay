@@ -7,7 +7,6 @@
 	import { Label } from "$lib/components/ui/label";
 	import * as Alert from "$lib/components/ui/alert";
 	import * as Card from "$lib/components/ui/card";
-	import Header from "./Header.svelte";
 
 	const dispatch = createEventDispatcher();
 

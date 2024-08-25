@@ -10,7 +10,7 @@
 	import ICON_CREDITS from "$lib/assets/icons/NSG_CREDIT.svg";
 	import ICON_AGENDAS from "$lib/assets/icons/NSG_AGENDA.svg";
 	import { Settings } from "lucide-svelte";
-	import { Button, buttonVariants } from "$lib/components/ui/button";
+	import { buttonVariants } from "$lib/components/ui/button";
 	import Column from "./ui/Column.svelte";
 	import { Label } from "$lib/components/ui/label";
 	import { Switch } from "$lib/components/ui/switch";
@@ -19,7 +19,6 @@
 	import type { GlobalData as TGlobalData } from "$lib/types";
 	import { Slider } from "$lib/components/ui/slider";
 	import { Input } from "$lib/components/ui/input";
-	import * as Select from "$lib/components/ui/select";
 
 	let global: TGlobalData = $globalData;
 	let deployType: boolean = $deploy.type !== "automatic";

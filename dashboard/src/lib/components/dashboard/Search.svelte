@@ -10,7 +10,6 @@
 	import Card from "../Card.svelte";
 	import Fuse from "fuse.js";
 	import { Input } from "$lib/components/ui/input";
-	import { Label } from "$lib/components/ui/label";
 
 	const dispatch = createEventDispatcher();
 

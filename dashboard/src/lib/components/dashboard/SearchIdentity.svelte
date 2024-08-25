@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
-	import { Check, ChevronsUpDown } from "lucide-svelte";
+	import { ChevronsUpDown } from "lucide-svelte";
 	import * as Command from "$lib/components/ui/command";
 	import * as Popover from "$lib/components/ui/popover";
 	import { Button } from "$lib/components/ui/button";
