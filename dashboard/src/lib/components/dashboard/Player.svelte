@@ -8,9 +8,6 @@
 	} from "$lib/types";
 	import { globalData, playerOneData, playerTwoData } from "$lib/store";
 	import Search from "$components/dashboard/Search.svelte";
-	import ICON_CLICKS from "$lib/assets/icons/NSG_CLICK.svg";
-	import ICON_CREDITS from "$lib/assets/icons/NSG_CREDIT.svg";
-	import ICON_AGENDAS from "$lib/assets/icons/NSG_AGENDA.svg";
 	import Counter from "./Counter.svelte";
 	import { find_faction_by_id } from "$lib/utils";
 	import SearchIdentity from "$components/dashboard/SearchIdentity.svelte";
@@ -67,17 +64,17 @@
 		{
 			name: "Clicks",
 			type: "clicks",
-			icon: ICON_CLICKS,
+			icon: "/NSG_CLICK.svg",
 		},
 		{
 			name: "Credits",
 			type: "credits",
-			icon: ICON_CREDITS,
+			icon: "/NSG_CREDIT.svg",
 		},
 		{
 			name: "Agendas",
 			type: "agendas",
-			icon: ICON_AGENDAS,
+			icon: "/NSG_AGENDA.svg",
 		},
 	];
 </script>

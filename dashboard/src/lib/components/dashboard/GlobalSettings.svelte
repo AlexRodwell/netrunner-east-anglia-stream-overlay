@@ -2,13 +2,9 @@
 	import { createEventDispatcher } from "svelte";
 	import Card from "$components/dashboard/ui/Card.svelte";
 	import { globalData, deploy } from "$lib/store";
-	import Heading from "$components/dashboard/ui/Heading.svelte";
 	import * as Dialog from "$lib/components/ui/dialog";
 
 	// Icons
-	import ICON_CLICKS from "$lib/assets/icons/NSG_CLICK.svg";
-	import ICON_CREDITS from "$lib/assets/icons/NSG_CREDIT.svg";
-	import ICON_AGENDAS from "$lib/assets/icons/NSG_AGENDA.svg";
 	import { Settings } from "lucide-svelte";
 	import { buttonVariants } from "$lib/components/ui/button";
 	import Column from "./ui/Column.svelte";
@@ -24,9 +20,9 @@
 	let deployType: boolean = $deploy.type !== "automatic";
 
 	const icons: Record<string, string> = {
-		clicks: ICON_CLICKS,
-		credits: ICON_CREDITS,
-		agendas: ICON_AGENDAS,
+		clicks: "/NSG_CLICK.svg",
+		credits: "/NSG_CREDIT.svg",
+		agendas: "/NSG_AGENDA.svg",
 	};
 
 	const dispatch = createEventDispatcher();
@@ -43,31 +39,38 @@
 		</Dialog.Header>
 		<div>
 			<Card outline={false} uid="display">
-				<Column columns={3}>
-					<Column span="1/-1">
-						<CardNew.Root>
-							<CardNew.Header>Deployment type</CardNew.Header>
-							<CardNew.Content class="switch-group">
-								<Switch
-									id="deploy-type"
-									bind:checked={deployType}
-									on:click={(event) => {
-										$deploy.type = deployType
-											? "automatic"
-											: "manual";
-										$deploy.proceed =
-											$deploy.type === "automatic";
-									}}
-								/>
-								<Label for="deploy-type">
-									{$deploy.type === "manual"
-										? "Manual"
-										: "Automatic (instant)"}
-								</Label>
-							</CardNew.Content>
-						</CardNew.Root>
-					</Column>
+				<Column>
+					<CardNew.Root>
+						<CardNew.Header>Deployment type</CardNew.Header>
+						<CardNew.Content class="switch-group">
+							<Switch
+								id="deploy-type"
+								bind:checked={deployType}
+								on:click={(event) => {
+									$deploy.type = deployType
+										? "automatic"
+										: "manual";
+									$deploy.proceed =
+										$deploy.type === "automatic";
+								}}
+							/>
+							<Label for="deploy-type">
+								{$deploy.type === "manual"
+									? "Manual"
+									: "Automatic (instant)"}
+							</Label>
+						</CardNew.Content>
+					</CardNew.Root>
+				</Column>
+			</Card>
+		</div>
 
+		<Dialog.Header>
+			<Dialog.Title>{$t("global_settings")}</Dialog.Title>
+		</Dialog.Header>
+		<div>
+			<Card>
+				<Column columns={3}>
 					<!-- <Column span="1/-1">
 						<CardNew.Root>
 							<CardNew.Header
@@ -145,7 +148,7 @@
 						</CardNew.Header>
 					</CardNew.Root>
 
-					<CardNew.Root>
+					<CardNew.Root class="col-[auto/span_2]">
 						<CardNew.Header class="switch-group justify-between">
 							<Label for="commentators">Commentators</Label>
 						</CardNew.Header>

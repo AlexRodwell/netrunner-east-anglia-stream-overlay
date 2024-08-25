@@ -15,6 +15,7 @@
 	import { page } from "$app/stores";
 	import { fetch_cards } from "$lib/utils";
 	import { t } from "$lib/translations";
+	import JSON_FACTIONS from "$lib/data/factions.json";
 
 	let socket: WebSocket;
 	let storage_keys: string[] = ["global", "playerOne", "playerTwo", "timer"];
@@ -153,6 +154,12 @@
 <svelte:head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="preconnect" href="https://static.nrdbassets.com/" />
+	{#each JSON_FACTIONS as faction}
+		<link rel="preload" href={faction.logo} as="image" />
+	{/each}
+	<link rel="preload" href="/NSG_CLICK.svg" as="image" />
+	<link rel="preload" href="/NSG_CREDIT.svg" as="image" />
+	<link rel="preload" href="/NSG_AGENDA.svg" as="image" />
 </svelte:head>
 
 {#await fetch_cards()}
