@@ -94,16 +94,14 @@
 		// Store data locally
 		localStorage.setItem(`hold_${type}`, JSON.stringify(data));
 
-		// Return early if proceed is not true, it will always be true for automatic, and only true for manual when the deploy button is clicked
-		if ($deploy.proceed !== true) return;
-
-		// Deploy data (taken from held localStorage data)
-		deploy_data();
+		if ($deploy.type === "manual") {
+			$deploy.proceed = true;
+		} else {
+			deploy_data();
+		}
 	};
 
 	const deploy_data = () => {
-		// console.clear();
-
 		["global", "playerOne", "playerTwo", "timer"].forEach((type) => {
 			// Return if hold_ value does not exist in localStorage
 			if (
@@ -137,12 +135,9 @@
 
 			// Remove hold value
 			localStorage.removeItem(`hold_${type}`);
-
-			// Set deploy proceed state to false after a manual deployment
-			if ($deploy.type === "manual") {
-				$deploy.proceed = false;
-			}
 		});
+
+		$deploy.proceed = false;
 	};
 </script>
 
@@ -150,7 +145,7 @@
 	class="bg-[#101010] text-foreground w-screen min-h-screen grid grid-rows-[auto_1fr]"
 >
 	<!-- Pass the deploy_data function as a property to header, so we can utilise the socket, without having to create a new WebSocket -->
-	<Header update={store_data} />
+	<Header update={store_data} {deploy_data} />
 	<section class="grid grid-cols-1 md:grid-cols-2 p-4 gap-4">
 		<Player
 			update={store_data}
