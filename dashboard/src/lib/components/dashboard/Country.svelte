@@ -13,9 +13,10 @@
 	let open = false;
 	let value = "";
 
-	$: selected =
-		JSON_COUNTRIES.find((f: any) => f.alpha2 === value) ??
-		"Select a country";
+	$: selected = JSON_COUNTRIES.find((f: any) => f.alpha2 === value) ?? {
+		name: "Select a country",
+		alpha2: "",
+	};
 
 	// We want to refocus the trigger button when the user selects
 	// an item from the list so users can continue navigating the
